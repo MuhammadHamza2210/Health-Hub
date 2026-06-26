@@ -32,6 +32,25 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
+## ☁️ Deploy on Streamlit Community Cloud
+1. Go to **https://share.streamlit.io** and sign in with GitHub.
+2. Click **Create app → Deploy a public app from GitHub**.
+3. Fill in:
+   - **Repository:** `MuhammadHamza2210/Health-Hub`
+   - **Branch:** `main`
+   - **Main file path:** `app.py`
+4. Open **Advanced settings → Secrets** and paste your keys (TOML format):
+   ```toml
+   USDA_API_KEY = "your_usda_key"
+   GROQ_API_KEY = "your_groq_key"
+   ```
+   These live only in Streamlit's dashboard — never in the repo.
+5. Click **Deploy**. Your app goes live at
+   `https://<your-app-name>.streamlit.app`.
+
+> Note: the cloud filesystem is ephemeral, so `data/` (accounts & chat history)
+> resets when the app restarts. That's expected for a free demo deployment.
+
 ## 🗂️ Project structure
 ```
 app.py                     # entry point, auth gate, navigation
