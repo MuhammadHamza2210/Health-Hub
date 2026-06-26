@@ -1,8 +1,24 @@
 # 💎 Health Hub PRO
 
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://health-app-z4pzhwxqyrtwisc5jlenab.streamlit.app/)
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Built with Streamlit](https://img.shields.io/badge/Built%20with-Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
+
 A premium health & wellness app with a glassmorphism + animated aurora UI,
 built with Streamlit. Rebuilt from a single-file prototype into a clean,
 modular project with **private API keys**.
+
+### 🔗 [Live Demo →](https://health-app-z4pzhwxqyrtwisc5jlenab.streamlit.app/)
+
+## 📸 Screenshots
+
+| Sign in | Dashboard |
+|---|---|
+| ![Login](assets/screenshots/login.png) | ![Dashboard](assets/screenshots/dashboard.png) |
+
+| Food Database | AI Health Coach |
+|---|---|
+| ![Food Database](assets/screenshots/food-database.png) | ![AI Health Coach](assets/screenshots/ai-coach.png) |
 
 ## ✨ Features
 - **Dashboard** — personalised greeting, quick stats and tool tiles
