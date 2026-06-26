@@ -1,0 +1,27 @@
+# Secrets — keep API keys private
+.streamlit/secrets.toml
+.env
+
+# Local user data
+data/
+users.json
+chat_history.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Extracted source from the original Word doc
+_extracted/
+
+# Original Word doc — contains plaintext API keys, keep it private
+*.docx
