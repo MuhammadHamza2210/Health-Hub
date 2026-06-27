@@ -1,10 +1,31 @@
 """Food Database — searchable nutrition explorer with glass cards."""
+import base64
 from datetime import datetime
+from pathlib import Path
 
 import pandas as pd
 import streamlit as st
 
 from healthhub.config import FOOD_CATEGORIES
+
+# Real food photos live in assets/food/<slug>.png (slug = lowercased, spaces → hyphens).
+_FOOD_IMG_DIR = Path(__file__).resolve().parents[2] / "assets" / "food"
+
+
+@st.cache_data(show_spinner=False)
+def _food_image_uri(food_name: str):
+    """Return a base64 data-URI for a food's photo, or None if we don't have one.
+
+    Embedding as a data-URI keeps the image working regardless of how/where the
+    Streamlit app is hosted (no static-file path juggling)."""
+    slug = food_name.lower().replace(" ", "-")
+    path = _FOOD_IMG_DIR / f"{slug}.png"
+    if not path.exists():
+        return None
+    data = path.read_bytes()
+    # Files keep a .png name but some are JPEG — pick the right mime from the bytes.
+    mime = "image/jpeg" if data[:3] == b"\xff\xd8\xff" else "image/png"
+    return f"data:{mime};base64," + base64.b64encode(data).decode()
 from healthhub.styles import hero
 from healthhub.services.nutrition import (
     api_configured,
@@ -81,13 +102,23 @@ def _macro_bar(label, value, color):
     )
 
 
-def _food_card(row):
+def _food_card(row, large=False):
     emoji = FOOD_CATEGORIES.get(row["Category"], "🍽️")
+    uri = _food_image_uri(row["Food"])
+    size = 150 if large else 70
+    if uri:
+        visual = (
+            f'<img src="{uri}" alt="{row["Food"]}" loading="lazy" '
+            f'style="width:{size}px;height:{size}px;object-fit:contain;border-radius:16px;'
+            f'background:rgba(255,255,255,.06);padding:8px;" />'
+        )
+    else:
+        visual = f'<div style="font-size:{2.6 if large else 2}rem;">{emoji}</div>'
     st.markdown(
         f"""
         <div class="glass" style="padding:18px 20px;">
-          <div style="font-size:2rem;">{emoji}</div>
-          <h3 style="margin:.3rem 0 .1rem;">{row['Food']}</h3>
+          {visual}
+          <h3 style="margin:.5rem 0 .1rem;">{row['Food']}</h3>
           <div style="color:var(--muted);font-size:.85rem;margin-bottom:12px;">
             {row['Category']} · {row['Calories']} kcal / 100g</div>
           <div style="display:flex;gap:8px;">
@@ -109,7 +140,7 @@ def _detail_view(db):
         st.session_state.selected_food = None
         st.rerun()
 
-    _food_card(row)
+    _food_card(row, large=True)
 
     # Favorites toggle
     favs = st.session_state.setdefault("favorites", set())
